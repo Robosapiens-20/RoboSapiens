@@ -8,6 +8,7 @@ public class gitTest extends OpMode {
     double z = 0.1;
     double a = 0.8;
     double f = 0.2;
+    double g = 1.7;
     @Override
     public void init() {
 

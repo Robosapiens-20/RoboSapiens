@@ -20,6 +20,7 @@ public class newGitTest extends LinearOpMode {
 
 
         motor.setPower(0);
+        motor.getPower();
         newmotor.setPower(0);
         newermotor.setPower(0);
 

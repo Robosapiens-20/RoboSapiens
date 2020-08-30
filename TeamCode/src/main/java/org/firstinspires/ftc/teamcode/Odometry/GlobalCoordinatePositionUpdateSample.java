@@ -41,9 +41,7 @@ public class GlobalCoordinatePositionUpdateSample extends LinearOpMode {
         such that when the verticalLeft and verticalRight encoders spin forward, they return positive values, and when the
         horizontal encoder travels to the right, it returns positive value
         */
-        verticalLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        verticalRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        horizontal.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         //Set the mode of the odometry encoders to RUN_WITHOUT_ENCODER
         verticalRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -71,6 +69,10 @@ public class GlobalCoordinatePositionUpdateSample extends LinearOpMode {
             telemetry.addData("X Position", globalPositionUpdate.returnXCoordinate() / COUNTS_PER_INCH);
             telemetry.addData("Y Position", globalPositionUpdate.returnYCoordinate() / COUNTS_PER_INCH);
             telemetry.addData("Orientation (Degrees)", globalPositionUpdate.returnOrientation());
+            telemetry.addData("Vertical left odometer position",verticalLeft.getCurrentPosition());
+            telemetry.addData("Vertical right odometer position",verticalRight.getCurrentPosition());
+            telemetry.addData("Horizontal odometer position",horizontal.getCurrentPosition());
+
             telemetry.addData("Thread Active", positionThread.isAlive());
             telemetry.update();
         }

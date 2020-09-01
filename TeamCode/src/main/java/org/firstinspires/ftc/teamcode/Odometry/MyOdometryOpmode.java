@@ -42,6 +42,8 @@ public class MyOdometryOpmode extends LinearOpMode {
         globalPositionUpdate.reverseRightEncoder();
         globalPositionUpdate.reverseNormalEncoder();
 
+        goToPosition(0,24,0.5,0,1.5);
+
         while(opModeIsActive()){
             //Display Global (x, y, theta) coordinates
             telemetry.addData("X Position", globalPositionUpdate.returnXCoordinate() / COUNTS_PER_INCH);
@@ -61,12 +63,55 @@ public class MyOdometryOpmode extends LinearOpMode {
 
     }
 
-    public void goToPosition(double targetXPosition, double targetYPosition, double robotPower, double desiredRobotOrientation){
+    public void goToPosition(double targetXPosition, double targetYPosition, double robotPower, double desiredRobotOrientation, double allowableDistanceError) {
+        targetXPosition *= COUNTS_PER_INCH;
+        targetYPosition *= COUNTS_PER_INCH;
+        allowableDistanceError *= COUNTS_PER_INCH;
+
         double distanceToXTarget = targetXPosition - globalPositionUpdate.returnXCoordinate();
         double distanceToYTarget = targetYPosition - globalPositionUpdate.returnYCoordinate();
 
-        double robotMovementAngle = Math.toDegrees(Math.atan2(distanceToXTarget, distanceToYTarget));
+        double distance = Math.hypot(distanceToXTarget, distanceToYTarget);
 
+        while (opModeIsActive() && distance > allowableDistanceError) {
+
+            distanceToXTarget = targetXPosition - globalPositionUpdate.returnXCoordinate();
+            distanceToYTarget = targetYPosition - globalPositionUpdate.returnYCoordinate();
+
+            double robotMovementAngle = Math.toDegrees(Math.atan2(distanceToXTarget, distanceToYTarget));
+
+            double robotMovementXComponent = calculateX(robotMovementAngle, robotPower);
+            double robotMovementYComponent = calculateY(robotMovementAngle, robotPower);
+            double pivotCorrection = desiredRobotOrientation - globalPositionUpdate.returnOrientation();
+
+
+            setJoysticks(robotMovementXComponent,robotMovementYComponent);
+
+        }
+
+        setPowerEach(0,0,0,0);
+
+        while (globalPositionUpdate.returnOrientation() < desiredRobotOrientation-1 || globalPositionUpdate.returnOrientation() > desiredRobotOrientation+1){
+            setPowerEach(0.2,-0.2,0.2,-0.2);
+
+        }
+
+        setPowerEach(0,0,0,0);
+
+    }
+
+    public void setPowerEach (double fr, double fl, double br, double bl){
+        right_front.setPower(fr);
+        left_front.setPower(fl);
+        right_back.setPower(br);
+        left_back.setPower(bl);
+    }
+
+    public void setJoysticks(double stickX, double stickY){
+        right_front.setPower(stickY - stickX);
+        left_front.setPower(stickY + stickX);
+        right_back.setPower(stickY + stickX);
+        left_back.setPower(stickY - stickX);
 
     }
 
@@ -105,8 +150,7 @@ public class MyOdometryOpmode extends LinearOpMode {
         left_back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         left_front.setDirection(DcMotorSimple.Direction.REVERSE);
-        right_front.setDirection(DcMotorSimple.Direction.REVERSE);
-        right_back.setDirection(DcMotorSimple.Direction.REVERSE);
+        left_back.setDirection(DcMotorSimple.Direction.REVERSE);
 
         telemetry.addData("Status", "Hardware Map Init Complete");
         telemetry.update();

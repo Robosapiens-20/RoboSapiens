@@ -108,10 +108,10 @@ public class MyOdometryOpmode extends LinearOpMode {
     }
 
     public void setJoysticks(double stickX, double stickY){
-        right_front.setPower(stickY - stickX);
-        left_front.setPower(stickY + stickX);
-        right_back.setPower(stickY + stickX);
-        left_back.setPower(stickY - stickX);
+        right_front.setPower(stickY + stickX);
+        left_front.setPower(stickY - stickX);
+        right_back.setPower(stickY - stickX);
+        left_back.setPower(stickY + stickX);
 
     }
 

@@ -62,6 +62,11 @@ public class MyOdometryOpmode extends LinearOpMode {
     }
 
     public void goToPosition(double targetXPosition, double targetYPosition, double robotPower, double desiredRobotOrientation){
+        double distanceToXTarget = targetXPosition - globalPositionUpdate.returnXCoordinate();
+        double distanceToYTarget = targetYPosition - globalPositionUpdate.returnYCoordinate();
+
+        double robotMovementAngle = Math.toDegrees(Math.atan2(distanceToXTarget, distanceToYTarget));
+
 
     }
 

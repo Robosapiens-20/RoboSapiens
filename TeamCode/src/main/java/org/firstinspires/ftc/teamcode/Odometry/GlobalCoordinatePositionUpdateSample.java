@@ -63,7 +63,7 @@ public class GlobalCoordinatePositionUpdateSample extends LinearOpMode {
         OdometryGlobalCoordinatePosition globalPositionUpdate = new OdometryGlobalCoordinatePosition(verticalLeft, verticalRight, horizontal, COUNTS_PER_INCH, 75);
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
-
+        globalPositionUpdate.reverseLeftEncoder();
         while(opModeIsActive()){
             //Display Global (x, y, theta) coordinates
             telemetry.addData("X Position", globalPositionUpdate.returnXCoordinate() / COUNTS_PER_INCH);

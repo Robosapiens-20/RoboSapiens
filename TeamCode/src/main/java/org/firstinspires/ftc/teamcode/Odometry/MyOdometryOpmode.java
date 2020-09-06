@@ -117,8 +117,6 @@ public class MyOdometryOpmode extends LinearOpMode {
             double robotMovementYComponent = calculateY(robotMovementAngle, robotPower);
             pivotCorrection = desiredRobotOrientation - globalPositionUpdate.returnOrientation();
 
-
-
             setJoysticks(robotMovementXComponent, robotMovementYComponent,0);
 
         }

@@ -6,24 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 /**
  * Created by Sarthak on 10/4/2019.
  */
 @TeleOp(name = "My Odometry OpMode")
-public class MyOdometryOpmode extends LinearOpMode {
+public class MyOdometryOpmodeCopy extends LinearOpMode {
     //Drive motors
     DcMotor frontRight, backRight, frontLeft, backLeft;
     //Odometry Wheels
@@ -37,9 +26,7 @@ public class MyOdometryOpmode extends LinearOpMode {
 
     OdometryGlobalCoordinatePosition globalPositionUpdate;
 
-    BNO055IMU               imu;
-    Orientation             lastAngles = new Orientation();
-    double                  globalAngle, power = .30, correction;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -48,24 +35,6 @@ public class MyOdometryOpmode extends LinearOpMode {
 
         telemetry.addData("Status", "Init Complete");
         telemetry.update();
-
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
-        parameters.mode                = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled      = false;
-
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-
-        imu.initialize(parameters);
-
-        while (!isStopRequested() && !imu.isGyroCalibrated())
-        {
-            sleep(50);
-            idle();
-        }
-
         waitForStart();
 
         //Create and start GlobalCoordinatePosition thread to constantly update the global coordinate positions
@@ -108,9 +77,6 @@ public class MyOdometryOpmode extends LinearOpMode {
 
         double distance = Math.hypot(distanceToXTarget, distanceToYTarget);
 
-        double pivotCorrection;
-        int pivotCorrection2 = 0;
-
         while (opModeIsActive() && distance > allowableDistanceError) {
 
             distanceToXTarget = targetXPosition - globalPositionUpdate.returnXCoordinate();
@@ -122,9 +88,9 @@ public class MyOdometryOpmode extends LinearOpMode {
 
             double robotMovementXComponent = calculateX(robotMovementAngle, robotPower);
             double robotMovementYComponent = calculateY(robotMovementAngle, robotPower);
-            pivotCorrection = desiredRobotOrientation - globalPositionUpdate.returnOrientation();
-            pivotCorrection2 = (int)pivotCorrection;
-
+            double pivotCorrection = desiredRobotOrientation - globalPositionUpdate.returnOrientation();
+            double pivotCorrection2;
+            pivotCorrection2 = pivotCorrection/180;
 
             setJoysticks(robotMovementXComponent, robotMovementYComponent,0);
 
@@ -132,8 +98,13 @@ public class MyOdometryOpmode extends LinearOpMode {
 
         setPowerEach(0,0,0,0);
 
-        rotate(pivotCorrection2,0.3);
+        while (globalPositionUpdate.returnOrientation() < desiredRobotOrientation-1){
+            setJoysticks(0,0,0.2);
 
+        }
+        while (globalPositionUpdate.returnOrientation() > desiredRobotOrientation+1){
+            setJoysticks(0,0,-0.2);
+        }
         setJoysticks(0,0,0);
 
 
@@ -215,86 +186,6 @@ public class MyOdometryOpmode extends LinearOpMode {
         return Math.cos(Math.toRadians(desiredAngle)) * speed;
     }
 
-    private double getAngle()
-    {
-        // We experimentally determined the Z axis is the axis we want to use for heading angle.
-        // We have to process the angle because the imu works in euler angles so the Z axis is
-        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
-        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        globalAngle += deltaAngle;
-
-        lastAngles = angles;
-
-        return globalAngle;
-    }
-
-    private void resetAngle()
-    {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        globalAngle = 0;
-    }
-
-    private void rotate(int degrees, double power)
-    {
-        double  leftPower, rightPower;
-
-        // restart imu movement tracking.
-        resetAngle();
-
-        // getAngle() returns + when rotating counter clockwise (left) and - when rotating
-        // clockwise (right).
-
-        if (degrees < 0)
-        {   // turn right.
-            leftPower = power;
-            rightPower = -power;
-        }
-        else if (degrees > 0)
-        {   // turn left.
-            leftPower = -power;
-            rightPower = power;
-        }
-        else return;
-
-        // set power to rotate.
-        frontLeft.setPower(leftPower);
-        frontRight.setPower(rightPower);
-        backLeft.setPower(leftPower);
-        backRight.setPower(rightPower);
-
-        // rotate until turn is completed.
-        if (degrees < 0)
-        {
-            // On right turn we have to get off zero first.
-            while (opModeIsActive() && getAngle() == 0) {}
-
-            while (opModeIsActive() && getAngle() > degrees) {}
-        }
-        else    // left turn.
-            while (opModeIsActive() && getAngle() < degrees) {}
-
-        // turn the motors off.
-        frontRight.setPower(0);
-        frontLeft.setPower(0);
-        backRight.setPower(0);
-        backLeft.setPower(0);
-
-        // wait for rotation to stop.
-        sleep(1000);
-
-        // reset angle tracking on new heading.
-        resetAngle();
-    }
 }
 

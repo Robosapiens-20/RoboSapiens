@@ -41,6 +41,9 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
 
         goToPosition(0,24,0.3,0,5);
 
+        globalPositionUpdate.reverseLeftEncoder();
+
+
         while(opModeIsActive()){
             //Display Global (x, y, theta) coordinates
             telemetry.addData("X Position", globalPositionUpdate.returnXCoordinate() / COUNTS_PER_INCH);

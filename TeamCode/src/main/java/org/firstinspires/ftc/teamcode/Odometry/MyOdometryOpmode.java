@@ -95,9 +95,12 @@ public class MyOdometryOpmode extends LinearOpMode {
 
         setPowerEach(0,0,0,0);
 
-        while (globalPositionUpdate.returnOrientation() < desiredRobotOrientation-1 || globalPositionUpdate.returnOrientation() > desiredRobotOrientation+1){
+        while (globalPositionUpdate.returnOrientation() < desiredRobotOrientation-1){
             setJoysticks(0,0,0.2);
 
+        }
+        while (globalPositionUpdate.returnOrientation() > desiredRobotOrientation+1){
+            setJoysticks(0,0,-0.2);
         }
         setJoysticks(0,0,0);
 

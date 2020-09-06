@@ -88,6 +88,7 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
             setJoysticks(robotMovementXComponent,robotMovementYComponent,0);
 
             telemetry.addData("Time Elapsed: ",System.currentTimeMillis() - startTime);
+            telemetry.addData("distance left", distance);
             telemetry.update();
 
         }

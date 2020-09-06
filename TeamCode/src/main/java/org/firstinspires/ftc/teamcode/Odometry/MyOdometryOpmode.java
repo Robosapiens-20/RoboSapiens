@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 /**
  * Created by Sarthak on 10/4/2019.
  */
-@TeleOp(name = "My Odometry OpMode")
+@TeleOp(name = "My Odometry OpMode IMU")
 public class MyOdometryOpmode extends LinearOpMode {
     //Drive motors
     DcMotor frontRight, backRight, frontLeft, backLeft;
@@ -27,7 +27,7 @@ public class MyOdometryOpmode extends LinearOpMode {
     final double COUNTS_PER_INCH = 307.699557;
 
     //Hardware Map Names for drive motors and odometry wheels. THIS WILL CHANGE ON EACH ROBOT, YOU NEED TO UPDATE THESE VALUES ACCORDINGLY
-    String rfName = "rf", rbName = "rb", lfName = "lf", lbName = "lb";
+    String rfName = "right_front", rbName = "right_back", lfName = "left_front", lbName = "left_back";
     String verticalLeftEncoderName = rbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
 
     OdometryGlobalCoordinatePosition globalPositionUpdate;
@@ -68,7 +68,7 @@ public class MyOdometryOpmode extends LinearOpMode {
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
 
-        globalPositionUpdate.reverseLeftEncoder();
+        //globalPositionUpdate.reverseLeftEncoder();
 
         goToPosition(0,24,0.5,0,1.5);
         goToPosition(24,24,0.5,0,1.5);

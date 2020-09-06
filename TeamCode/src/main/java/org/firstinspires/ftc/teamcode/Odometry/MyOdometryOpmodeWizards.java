@@ -39,6 +39,7 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
 
+        goToPosition(0,24,1,0,5);
 
         while(opModeIsActive()){
             //Display Global (x, y, theta) coordinates
@@ -91,7 +92,6 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
         }
 
         setJoysticks(0,0,0);
-
 
 
     }

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Odometry.OdometryGlobalCoordinatePosition;
 /**
  * Created by Sarthak on 10/4/2019.
  */
-@TeleOp(name = "My Odometry OpMode")
+@TeleOp(name = "My Odometry OpMode Wizards")
 public class MyOdometryOpmodeWizards extends LinearOpMode {
     //Drive motors
     DcMotor right_front, right_back, left_front, left_back;
@@ -39,7 +39,7 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
 
-        goToPosition(0,24,0.5,0,5);
+        goToPosition(0,24,0.3,0,5);
 
         while(opModeIsActive()){
             //Display Global (x, y, theta) coordinates

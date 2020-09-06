@@ -89,6 +89,10 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
 
             telemetry.addData("Time Elapsed: ",System.currentTimeMillis() - startTime);
             telemetry.addData("distance left", distance);
+            telemetry.addData("distance to X", distanceToXTarget);
+            telemetry.addData("distance to Y", distanceToYTarget);
+            telemetry.addData("return x coordinate", globalPositionUpdate.returnXCoordinate());
+            telemetry.addData("return y coordinate", globalPositionUpdate.returnYCoordinate());
             telemetry.update();
 
         }

@@ -39,7 +39,7 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
 
-        goToPosition(0,24,1,0,5);
+        goToPosition(0,24,0.5,0,5);
 
         while(opModeIsActive()){
             //Display Global (x, y, theta) coordinates
@@ -77,6 +77,7 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
             distanceToXTarget = targetXPosition - globalPositionUpdate.returnXCoordinate();
             distanceToYTarget = targetYPosition - globalPositionUpdate.returnYCoordinate();
 
+            distance = Math.hypot(distanceToXTarget, distanceToYTarget);
 
             double robotMovementAngle = Math.toDegrees(Math.atan2(distanceToXTarget, distanceToYTarget));
 
@@ -141,7 +142,7 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
         left_front.setDirection(DcMotorSimple.Direction.REVERSE);
         left_back.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        verticalLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         telemetry.addData("Status", "Hardware Map Init Complete");
         telemetry.update();

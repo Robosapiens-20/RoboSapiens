@@ -42,6 +42,7 @@ public class MyOdometryOpmode extends LinearOpMode {
         globalPositionUpdate.reverseLeftEncoder();
 
         goToPosition(0,24,0.5,0,1.5);
+        goToPosition(24,24,0.5,0,1.5);
 
         while(opModeIsActive()){
             //Display Global (x, y, theta) coordinates
@@ -55,6 +56,7 @@ public class MyOdometryOpmode extends LinearOpMode {
 
             telemetry.addData("Thread Active", positionThread.isAlive());
             telemetry.update();
+
         }
 
         //Stop the thread
@@ -84,16 +86,16 @@ public class MyOdometryOpmode extends LinearOpMode {
             double pivotCorrection = desiredRobotOrientation - globalPositionUpdate.returnOrientation();
 
 
-            setJoysticks(robotMovementXComponent,robotMovementYComponent);
+            setJoysticks(robotMovementXComponent,robotMovementYComponent,pivotCorrection);
 
         }
 
         setPowerEach(0,0,0,0);
 
-        while (globalPositionUpdate.returnOrientation() < desiredRobotOrientation-1 || globalPositionUpdate.returnOrientation() > desiredRobotOrientation+1){
-            setPowerEach(0.2,-0.2,0.2,-0.2);
-
-        }
+//        while (globalPositionUpdate.returnOrientation() < desiredRobotOrientation-1 || globalPositionUpdate.returnOrientation() > desiredRobotOrientation+1){
+//            setPowerEach(0.2,-0.2,0.2,-0.2);
+//
+//        }
 
         setPowerEach(0,0,0,0);
 
@@ -106,11 +108,11 @@ public class MyOdometryOpmode extends LinearOpMode {
         left_back.setPower(bl);
     }
 
-    public void setJoysticks(double stickX, double stickY){
-        right_front.setPower(stickY + stickX);
-        left_front.setPower(stickY - stickX);
-        right_back.setPower(stickY - stickX);
-        left_back.setPower(stickY + stickX);
+    public void setJoysticks(double stickX, double stickY, double rotate){
+        right_front.setPower(-stickY + stickX + rotate);
+        left_front.setPower(-stickY - stickX - rotate);
+        right_back.setPower(-stickY - stickX + rotate);
+        left_back.setPower(-stickY + stickX - rotate);
 
     }
 

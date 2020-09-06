@@ -103,8 +103,8 @@ public class MyOdometryOpmode extends LinearOpMode {
 
         double distance = Math.hypot(distanceToXTarget, distanceToYTarget);
 
-        double pivotCorrection;
-        int pivotCorrection2 = 0;
+        double pivotCorrection = 0;
+
 
         while (opModeIsActive() && distance > allowableDistanceError) {
 
@@ -116,7 +116,7 @@ public class MyOdometryOpmode extends LinearOpMode {
             double robotMovementXComponent = calculateX(robotMovementAngle, robotPower);
             double robotMovementYComponent = calculateY(robotMovementAngle, robotPower);
             pivotCorrection = desiredRobotOrientation - globalPositionUpdate.returnOrientation();
-            pivotCorrection2 = (int)pivotCorrection;
+
 
 
             setJoysticks(robotMovementXComponent, robotMovementYComponent,0);
@@ -125,7 +125,7 @@ public class MyOdometryOpmode extends LinearOpMode {
 
         setPowerEach(0,0,0,0);
 
-        rotate(pivotCorrection2,0.3);
+        rotate(pivotCorrection,0.3);
 
         setJoysticks(0,0,0);
 
@@ -238,7 +238,7 @@ public class MyOdometryOpmode extends LinearOpMode {
         globalAngle = 0;
     }
 
-    private void rotate(int degrees, double power)
+    private void rotate(double degrees, double power)
     {
         double  leftPower, rightPower;
 

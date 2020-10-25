@@ -38,10 +38,11 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
         globalPositionUpdate = new OdometryGlobalCoordinatePosition(verticalLeft, verticalRight, horizontal, COUNTS_PER_INCH, 75);
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
+        globalPositionUpdate.reverseLeftEncoder();
 
         goToPosition(0,24,0.3,0,5);
 
-        globalPositionUpdate.reverseLeftEncoder();
+
 
 
         while(opModeIsActive()){
@@ -80,7 +81,6 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
             distanceToXTarget = targetXPosition - globalPositionUpdate.returnXCoordinate();
             distanceToYTarget = targetYPosition - globalPositionUpdate.returnYCoordinate();
 
-            distance = Math.hypot(distanceToXTarget, distanceToYTarget);
 
             double robotMovementAngle = Math.toDegrees(Math.atan2(distanceToXTarget, distanceToYTarget));
 
@@ -94,8 +94,8 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
             telemetry.addData("distance left", distance);
             telemetry.addData("distance to X", distanceToXTarget);
             telemetry.addData("distance to Y", distanceToYTarget);
-            telemetry.addData("return x coordinate", globalPositionUpdate.returnXCoordinate());
-            telemetry.addData("return y coordinate", globalPositionUpdate.returnYCoordinate());
+            telemetry.addData("return x coordinate", globalPositionUpdate.returnXCoordinate()/COUNTS_PER_INCH);
+            telemetry.addData("return y coordinate", globalPositionUpdate.returnYCoordinate()/COUNTS_PER_INCH);
             telemetry.update();
 
         }

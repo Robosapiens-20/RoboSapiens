@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "StraferSkystoneThird", group = "TestBot")
-public class StraferChassis extends LinearOpMode {
+public class    StraferChassis extends LinearOpMode {
 
     // String liftServoName = "lift_servo";
 

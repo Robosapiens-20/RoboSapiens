@@ -67,7 +67,7 @@ DcMotor wobbler_motor = null;
 
             GoalShooter.setPower(-gamepad1.right_trigger);
             ringIntake.setPower(-gamepad1.left_stick_y);
-            wobbler_motor.setPower(gamepad1.right_stick_y);
+            wobbler_motor.setPower(0.05*gamepad1.right_stick_y);
 
 
             telemetry.addData("Shooter speed", GoalShooter.getPower());

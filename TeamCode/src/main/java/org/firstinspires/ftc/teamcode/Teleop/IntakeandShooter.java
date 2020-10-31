@@ -89,16 +89,20 @@ DcMotor wobbler_motor = null;
 
 
 
+        boolean currentStateOfT1 = false;
+        boolean currentStateOfT2 = false;
+
         Gamepad g1 = gamepad1;
         Gamepad g2 = gamepad2;
 
 
         waitForStart();
         while (opModeIsActive()) {
-
-
+            currentStateOfT1 = g2.left_bumper;
+            currentStateOfT2 = g2.right_bumper;
 
             GoalShooter.setPower(-g2.right_trigger);
+            GoalShooter.setPower(g2.left_trigger);
             ringIntake.setPower(-g2.left_stick_y);
             wobbler_motor.setPower(0.5*g2.right_stick_y);
 
@@ -113,12 +117,12 @@ DcMotor wobbler_motor = null;
             }
 
 
-            if(g2.x)
+            if(g2.left_bumper && currentStateOfT1 != false)
             {
-                wobbler.setPosition(1);
-            }
-            else{
                 wobbler.setPosition(0.5);
+            }
+            if (g2.right_bumper && currentStateOfT2 != false){
+                wobbler.setPosition(1);
             }
 
 

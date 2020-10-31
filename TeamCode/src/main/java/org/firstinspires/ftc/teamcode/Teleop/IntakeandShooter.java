@@ -103,7 +103,8 @@ DcMotor wobbler_motor = null;
 
             GoalShooter.setPower(-g2.right_trigger);
             GoalShooter.setPower(g2.left_trigger);
-            ringIntake.setPower(-g2.left_stick_y);
+            ringIntake.setPower(-g1.right_trigger);
+            ringIntake.setPower(g1.left_trigger);
             wobbler_motor.setPower(0.5*g2.right_stick_y);
 
             JoystickDrive(g1.left_stick_x,g1.left_stick_y,g1.right_stick_x,g1.right_stick_y);
@@ -115,7 +116,6 @@ DcMotor wobbler_motor = null;
             }else{
                 pusher.setPosition(0.55);
             }
-
 
             if(g2.left_bumper && currentStateOfT1 != false)
             {

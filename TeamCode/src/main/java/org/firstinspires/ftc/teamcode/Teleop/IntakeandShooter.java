@@ -98,11 +98,12 @@ DcMotor wobbler_motor = null;
 
         waitForStart();
         while (opModeIsActive()) {
+
             currentStateOfT1 = g2.left_bumper;
             currentStateOfT2 = g2.right_bumper;
 
-            GoalShooter.setPower(-g2.right_trigger);
-            GoalShooter.setPower(g2.left_trigger);
+
+
             ringIntake.setPower(-g1.right_trigger);
             ringIntake.setPower(g1.left_trigger);
             wobbler_motor.setPower(0.5*g2.right_stick_y);
@@ -110,7 +111,20 @@ DcMotor wobbler_motor = null;
             JoystickDrive(g1.left_stick_x,g1.left_stick_y,g1.right_stick_x,g1.right_stick_y);
 
             telemetry.addData("Shooter speed", GoalShooter.getPower());
+            telemetry.update();
 
+
+
+if(g2.right_trigger==1)
+{
+
+
+        GoalShooter.setPower(-0.96*g2.left_stick_y);
+
+}else {
+
+    GoalShooter.setPower(-g2.left_stick_y);
+}
             if (g2.a) {
                 pusher.setPosition(0.3);
             }else{
@@ -119,7 +133,7 @@ DcMotor wobbler_motor = null;
 
             if(g2.left_bumper && currentStateOfT1 != false)
             {
-                wobbler.setPosition(0.5);
+                wobbler.setPosition(0.3);
             }
             if (g2.right_bumper && currentStateOfT2 != false){
                 wobbler.setPosition(1);
@@ -137,15 +151,15 @@ DcMotor wobbler_motor = null;
         double right = -leftStickX;
         double clockwise = -rightStickX;
 
-        double frontLeft2 = (forward + clockwise + right);
-        double frontRight2 = (forward - clockwise - right);
-        double backLeft2 = (forward + clockwise - right);
-        double backRight2 = (forward - clockwise + right);
+        double frontLeft2 = (forward - clockwise + right);
+        double frontRight2 = (forward + clockwise - right);
+        double backLeft2 = (forward - clockwise - right);
+        double backRight2 = (forward + clockwise + right);
 
-        frontRight.setPower(-0.4*frontRight2);
-        frontLeft.setPower(-0.4*frontLeft2);
-        backRight.setPower(-0.4*backRight2);
-        backLeft.setPower(-0.4*backLeft2);
+        frontRight.setPower(0.6*frontRight2);
+        frontLeft.setPower(0.6*frontLeft2);
+        backRight.setPower(0.6*backRight2);
+        backLeft.setPower(0.6*backLeft2);
     }
 
 }

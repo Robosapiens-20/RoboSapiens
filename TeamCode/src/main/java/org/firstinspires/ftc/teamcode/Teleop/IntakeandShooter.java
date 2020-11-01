@@ -38,8 +38,8 @@ public class IntakeandShooter extends LinearOpMode {
     DcMotor ringIntake = null;
 
     Servo pusher = null;
-Servo wobbler = null;
-DcMotor wobbler_motor = null;
+    Servo wobbler = null;
+    DcMotor wobbler_motor = null;
     DcMotor frontLeft = null;
     DcMotor frontRight = null;
     DcMotor backLeft = null;
@@ -108,33 +108,35 @@ DcMotor wobbler_motor = null;
             ringIntake.setPower(g1.left_trigger);
             wobbler_motor.setPower(0.5*g2.right_stick_y);
 
-            JoystickDrive(g1.left_stick_x,g1.left_stick_y,g1.right_stick_x,g1.right_stick_y);
-
+            if (g1.right_trigger == 1) {
+                JoystickDrive(g1.left_stick_x, g1.left_stick_y, g1.right_stick_x, g1.right_stick_y);
+            }
+            else{
+                ReverseJoystickDrive(g1.left_stick_x,g1.left_stick_y,g1.right_stick_x,g1.right_stick_y);
+            }
             telemetry.addData("Shooter speed", GoalShooter.getPower());
             telemetry.update();
 
 
 
-if(g2.right_trigger==1)
-{
+            if(g2.right_trigger==1) {
+                GoalShooter.setPower(-0.96*g2.left_stick_y);
+            }
+            else {
+                GoalShooter.setPower(-g2.left_stick_y);
+            }
 
-
-        GoalShooter.setPower(-0.96*g2.left_stick_y);
-
-}else {
-
-    GoalShooter.setPower(-g2.left_stick_y);
-}
             if (g2.a) {
                 pusher.setPosition(0.3);
-            }else{
+            }
+            else{
                 pusher.setPosition(0.55);
             }
 
-            if(g2.left_bumper && currentStateOfT1 != false)
-            {
+            if(g2.left_bumper && currentStateOfT1 != false) {
                 wobbler.setPosition(0.3);
             }
+
             if (g2.right_bumper && currentStateOfT2 != false){
                 wobbler.setPosition(1);
             }
@@ -160,6 +162,22 @@ if(g2.right_trigger==1)
         frontLeft.setPower(0.6*frontLeft2);
         backRight.setPower(0.6*backRight2);
         backLeft.setPower(0.6*backLeft2);
+    }
+
+    public void ReverseJoystickDrive(double leftStickX, double leftStickY, double rightStickX, double rightStickY){
+        double forward = leftStickY;
+        double right = -leftStickX;
+        double clockwise = -rightStickX;
+
+        double frontLeft2 = (-forward - clockwise - right);
+        double frontRight2 = (-forward + clockwise + right);
+        double backLeft2 = (-forward - clockwise + right);
+        double backRight2 = (-forward + clockwise - right);
+
+        frontRight.setPower(0.7*frontRight2);
+        frontLeft.setPower(0.7*frontLeft2);
+        backRight.setPower(0.7*backRight2);
+        backLeft.setPower(0.7*backLeft2);
     }
 
 }

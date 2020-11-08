@@ -29,8 +29,8 @@ public class OdometryCalibration extends LinearOpMode {
     BNO055IMU imu;
 
     //Hardware Map Names for drive motors and odometry wheels. THIS WILL CHANGE ON EACH ROBOT, YOU NEED TO UPDATE THESE VALUES ACCORDINGLY
-    String rfName = "right_front",  rbName = "right_back", lfName = "left_front", lbName = "left_back";
-    String verticalLeftEncoderName = rbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
+    String rfName = "front_right",  rbName = "back_right", lfName = "front_left", lbName = "back_left";
+    String verticalLeftEncoderName = rfName, verticalRightEncoderName = rbName, horizontalEncoderName = lfName;
 
     final double PIVOT_SPEED = 0.5;
 

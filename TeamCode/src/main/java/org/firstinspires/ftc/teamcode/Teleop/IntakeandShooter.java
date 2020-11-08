@@ -105,14 +105,16 @@ public class IntakeandShooter extends LinearOpMode {
 
 
             ringIntake.setPower(-g1.right_trigger);
-            ringIntake.setPower(g1.left_trigger);
+           // ringIntake.setPower(g1.left_trigger);
             wobbler_motor.setPower(0.5*g2.right_stick_y);
 
-            if (g1.right_trigger == 1) {
-                JoystickDrive(g1.left_stick_x, g1.left_stick_y, g1.right_stick_x, g1.right_stick_y);
+            if (g1.left_trigger == 1) {
+                ReverseJoystickDrive(g1.left_stick_x,g1.left_stick_y,g1.right_stick_x,g1.right_stick_y);
             }
             else{
-                ReverseJoystickDrive(g1.left_stick_x,g1.left_stick_y,g1.right_stick_x,g1.right_stick_y);
+
+
+                JoystickDrive(g1.left_stick_x, g1.left_stick_y, g1.right_stick_x, g1.right_stick_y);
             }
             telemetry.addData("Shooter speed", GoalShooter.getPower());
             telemetry.update();

@@ -20,8 +20,8 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
     final double COUNTS_PER_INCH = 307.699557;
 
     //Hardware Map Names for drive motors and odometry wheels. THIS WILL CHANGE ON EACH ROBOT, YOU NEED TO UPDATE THESE VALUES ACCORDINGLY
-    String rfName = "right_front", rbName = "right_back", lfName = "left_front", lbName = "left_back";
-    String verticalLeftEncoderName = rbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
+    String rfName = "front_right", rbName = "back_right", lfName = "front_left", lbName = "back_left";
+    String verticalLeftEncoderName = rfName, verticalRightEncoderName = rbName, horizontalEncoderName = lfName;
 
     OdometryGlobalCoordinatePosition globalPositionUpdate;
 
@@ -38,9 +38,9 @@ public class MyOdometryOpmodeWizards extends LinearOpMode {
         globalPositionUpdate = new OdometryGlobalCoordinatePosition(verticalLeft, verticalRight, horizontal, COUNTS_PER_INCH, 75);
         Thread positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
-        globalPositionUpdate.reverseLeftEncoder();
+        //globalPositionUpdate.reverseLeftEncoder();
 
-        goToPosition(0,24,0.3,0,5);
+        goToPosition(0,24,-0.3,0,5);
 
 
 
